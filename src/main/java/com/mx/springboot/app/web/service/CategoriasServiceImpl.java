@@ -2,10 +2,13 @@ package com.mx.springboot.app.web.service;
 
 import java.util.LinkedList;
 import java.util.List;
+
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import com.mx.springboot.app.web.model.Categoria;
 
 @Service
+//@Primary
 public class CategoriasServiceImpl implements ICategoriasService{
 
 	private List<Categoria> lista = null;
