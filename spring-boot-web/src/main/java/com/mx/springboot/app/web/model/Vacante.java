@@ -1,37 +1,50 @@
+/**
+ * Esta clase representa una entidad (un registro) en la tabla de Usuarios de la base de datos
+ */
 package com.mx.springboot.app.web.model;
 
 import java.util.Date;
-
+import java.util.LinkedList;
+import java.util.List;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
-@Entity 
-@Table(name="Vacantes")
-public class Vacante {
-	
+@Entity
+@Table(name = "Usuarios")
+public class Usuario {
+
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	
-
+	@GeneratedValue(strategy = GenerationType.IDENTITY) // auto_increment MySQL
 	private Integer id;
+	private String username;
 	private String nombre;
-	private String descripcion;
-	private Date fecha;
-	private Double salario;
-	private Integer destacado;
-	private String imagen="no-image.png";
-	private String estatus;
-	private String detalles;
-	//@Transient
-	@OneToOne
-	@JoinColumn(name="idCategoria")
-	private Categoria categoria;
+	private String email;
+	private String password;
+	private Integer estatus;	
+	private Date fechaRegistro;
+	@ManyToMany(fetch=FetchType.EAGER)
+	@JoinTable(name="UsuarioPerfil",
+			   joinColumns = @JoinColumn(name="idUsuario"),
+			   inverseJoinColumns = @JoinColumn(name="idPerfil")			
+			)
+	private List<Perfil> perfiles;
+	
+	
+	
+	
+	public void agregar(Perfil tempPerfil) {
+		if (perfiles == null) {
+			perfiles = new LinkedList<Perfil>();
+		}
+		perfiles.add(tempPerfil);
+	}
 
 	public Integer getId() {
 		return id;
@@ -39,6 +52,14 @@ public class Vacante {
 
 	public void setId(Integer id) {
 		this.id = id;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	public String getNombre() {
@@ -49,85 +70,51 @@ public class Vacante {
 		this.nombre = nombre;
 	}
 
-	public String getDescripcion() {
-		return descripcion;
+	public String getEmail() {
+		return email;
 	}
 
-	public void setDescripcion(String descripcion) {
-		this.descripcion = descripcion;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
-	public Date getFecha() {
-		return fecha;
+	public String getPassword() {
+		return password;
 	}
 
-	public void setFecha(Date fecha) {
-		this.fecha = fecha;
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
-	public Double getSalario() {
-		return salario;
-	}
-
-	public void setSalario(Double salario) {
-		this.salario = salario;
-	}
-
-
-	public Integer getDestacado() {
-		return destacado;
-	}
-
-	public void setDestacado(Integer destacado) {
-		this.destacado = destacado;
-	}
-
-	
-	
-	public String getImagen() {
-		return imagen;
-	}
-
-	public void setImagen(String imagen) {
-		this.imagen = imagen;
-	}
-	
-	
-
-	public String getEstatus() {
+	public Integer getEstatus() {
 		return estatus;
 	}
 
-	public void setEstatus(String estatus) {
+	public void setEstatus(Integer estatus) {
 		this.estatus = estatus;
 	}
 
-	public String getDetalles() {
-		return detalles;
+	public Date getFechaRegistro() {
+		return fechaRegistro;
 	}
 
-	public void setDetalles(String detalles) {
-		this.detalles = detalles;
+	public void setFechaRegistro(Date fechaRegistro) {
+		this.fechaRegistro = fechaRegistro;
 	}
-	
-	
+		
 
-	public Categoria getCategoria() {
-		return categoria;
+	public List<Perfil> getPerfiles() {
+		return perfiles;
 	}
 
-	public void setCategoria(Categoria categoria) {
-		this.categoria = categoria;
+	public void setPerfiles(List<Perfil> perfiles) {
+		this.perfiles = perfiles;
 	}
 
 	@Override
 	public String toString() {
-		return "Vacante [id=" + id + ", nombre=" + nombre + ", descripcion=" + descripcion + ", fecha=" + fecha
-				+ ", salario=" + salario + ", destacado=" + destacado + ", imagen=" + imagen + ", estatus=" + estatus
-				+ ", detalles=" + detalles + ", categoria=" + categoria + "]";
+		return "Usuario [id=" + id + ", username=" + username + ", nombre=" + nombre + ", email=" + email
+				+ ", password=" + password + ", estatus=" + estatus + ", fechaRegistro=" + fechaRegistro + "]";
 	}
-
 	
-	
-
 }
